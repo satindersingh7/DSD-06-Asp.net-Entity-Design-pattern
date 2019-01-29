@@ -1,0 +1,395 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="EntityModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="addresses">
+          <Key>
+            <PropertyRef Name="user_id" />
+          </Key>
+          <Property Name="user_id" Type="int" Nullable="false" />
+          <Property Name="street" Type="varchar" MaxLength="30" Nullable="false" />
+          <Property Name="city" Type="varchar" MaxLength="30" Nullable="false" />
+          <Property Name="state" Type="varchar" MaxLength="30" Nullable="false" />
+        </EntityType>
+        <EntityType Name="books">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="title" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="author" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="isbn" Type="char" MaxLength="12" />
+        </EntityType>
+        <EntityType Name="checkouts">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="user_id" Type="int" Nullable="false" />
+          <Property Name="book_id" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Login">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="numeric" Precision="18" Scale="0" Nullable="false" />
+          <Property Name="username" Type="varchar" MaxLength="50" />
+          <Property Name="password" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="REGISTER">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="FNAME" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="LNAME" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="EMAILID" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="PASSWORD" Type="nvarchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="reviews">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="book_id" Type="int" Nullable="false" />
+          <Property Name="reviewer_name" Type="varchar" MaxLength="255" />
+          <Property Name="content" Type="varchar" MaxLength="255" />
+          <Property Name="rating" Type="int" />
+          <Property Name="published_date" Type="datetime" />
+        </EntityType>
+        <Association Name="FK__addresses__user___412EB0B6">
+          <End Role="REGISTER" Type="Self.REGISTER" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="addresses" Type="Self.addresses" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="REGISTER">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="addresses">
+              <PropertyRef Name="user_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__checkouts__book___4222D4EF">
+          <End Role="books" Type="Self.books" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="checkouts" Type="Self.checkouts" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="books">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="checkouts">
+              <PropertyRef Name="book_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__checkouts__user___4316F928">
+          <End Role="REGISTER" Type="Self.REGISTER" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="checkouts" Type="Self.checkouts" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="REGISTER">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="checkouts">
+              <PropertyRef Name="user_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__reviews__book_id__440B1D61">
+          <End Role="books" Type="Self.books" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="reviews" Type="Self.reviews" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="books">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="reviews">
+              <PropertyRef Name="book_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Function Name="sp_REGISTER" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="Task" Type="int" Mode="In" />
+          <Parameter Name="FNAME" Type="nvarchar" Mode="In" />
+          <Parameter Name="LNAME" Type="nvarchar" Mode="In" />
+          <Parameter Name="EMAILID" Type="nvarchar(max)" Mode="In" />
+          <Parameter Name="PASSWORD" Type="nvarchar" Mode="In" />
+        </Function>
+        <EntityContainer Name="EntityModelStoreContainer">
+          <EntitySet Name="addresses" EntityType="Self.addresses" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="books" EntityType="Self.books" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="checkouts" EntityType="Self.checkouts" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Login" EntityType="Self.Login" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="REGISTER" EntityType="Self.REGISTER" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="reviews" EntityType="Self.reviews" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK__addresses__user___412EB0B6" Association="Self.FK__addresses__user___412EB0B6">
+            <End Role="REGISTER" EntitySet="REGISTER" />
+            <End Role="addresses" EntitySet="addresses" />
+          </AssociationSet>
+          <AssociationSet Name="FK__checkouts__book___4222D4EF" Association="Self.FK__checkouts__book___4222D4EF">
+            <End Role="books" EntitySet="books" />
+            <End Role="checkouts" EntitySet="checkouts" />
+          </AssociationSet>
+          <AssociationSet Name="FK__checkouts__user___4316F928" Association="Self.FK__checkouts__user___4316F928">
+            <End Role="REGISTER" EntitySet="REGISTER" />
+            <End Role="checkouts" EntitySet="checkouts" />
+          </AssociationSet>
+          <AssociationSet Name="FK__reviews__book_id__440B1D61" Association="Self.FK__reviews__book_id__440B1D61">
+            <End Role="books" EntitySet="books" />
+            <End Role="reviews" EntitySet="reviews" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="EntityModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="address">
+          <Key>
+            <PropertyRef Name="user_id" />
+          </Key>
+          <Property Name="user_id" Type="Int32" Nullable="false" />
+          <Property Name="street" Type="String" MaxLength="30" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="city" Type="String" MaxLength="30" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="state" Type="String" MaxLength="30" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="REGISTER" Relationship="Self.FK__addresses__user___412EB0B6" FromRole="addresses" ToRole="REGISTER" />
+        </EntityType>
+        <EntityType Name="book">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="title" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="author" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="isbn" Type="String" MaxLength="12" FixedLength="true" Unicode="false" />
+          <NavigationProperty Name="checkouts" Relationship="Self.FK__checkouts__book___4222D4EF" FromRole="books" ToRole="checkouts" />
+          <NavigationProperty Name="reviews" Relationship="Self.FK__reviews__book_id__440B1D61" FromRole="books" ToRole="reviews" />
+        </EntityType>
+        <EntityType Name="checkout">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="user_id" Type="Int32" Nullable="false" />
+          <Property Name="book_id" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="book" Relationship="Self.FK__checkouts__book___4222D4EF" FromRole="checkouts" ToRole="books" />
+          <NavigationProperty Name="REGISTER" Relationship="Self.FK__checkouts__user___4316F928" FromRole="checkouts" ToRole="REGISTER" />
+        </EntityType>
+        <EntityType Name="REGISTER">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="FNAME" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="LNAME" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="EMAILID" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="PASSWORD" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="address" Relationship="Self.FK__addresses__user___412EB0B6" FromRole="REGISTER" ToRole="addresses" />
+          <NavigationProperty Name="checkouts" Relationship="Self.FK__checkouts__user___4316F928" FromRole="REGISTER" ToRole="checkouts" />
+        </EntityType>
+        <EntityType Name="review">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="book_id" Type="Int32" Nullable="false" />
+          <Property Name="reviewer_name" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="content" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="rating" Type="Int32" />
+          <Property Name="published_date" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="book" Relationship="Self.FK__reviews__book_id__440B1D61" FromRole="reviews" ToRole="books" />
+        </EntityType>
+        <Association Name="FK__addresses__user___412EB0B6">
+          <End Role="REGISTER" Type="Self.REGISTER" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="addresses" Type="Self.address" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="REGISTER">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="addresses">
+              <PropertyRef Name="user_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__checkouts__book___4222D4EF">
+          <End Role="books" Type="Self.book" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="checkouts" Type="Self.checkout" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="books">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="checkouts">
+              <PropertyRef Name="book_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__reviews__book_id__440B1D61">
+          <End Role="books" Type="Self.book" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="reviews" Type="Self.review" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="books">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="reviews">
+              <PropertyRef Name="book_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__checkouts__user___4316F928">
+          <End Role="REGISTER" Type="Self.REGISTER" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="checkouts" Type="Self.checkout" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="REGISTER">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="checkouts">
+              <PropertyRef Name="user_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="EntityEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="addresses" EntityType="Self.address" />
+          <EntitySet Name="books" EntityType="Self.book" />
+          <EntitySet Name="checkouts" EntityType="Self.checkout" />
+          <EntitySet Name="REGISTERs" EntityType="Self.REGISTER" />
+          <EntitySet Name="reviews" EntityType="Self.review" />
+          <AssociationSet Name="FK__addresses__user___412EB0B6" Association="Self.FK__addresses__user___412EB0B6">
+            <End Role="REGISTER" EntitySet="REGISTERs" />
+            <End Role="addresses" EntitySet="addresses" />
+          </AssociationSet>
+          <AssociationSet Name="FK__checkouts__book___4222D4EF" Association="Self.FK__checkouts__book___4222D4EF">
+            <End Role="books" EntitySet="books" />
+            <End Role="checkouts" EntitySet="checkouts" />
+          </AssociationSet>
+          <AssociationSet Name="FK__reviews__book_id__440B1D61" Association="Self.FK__reviews__book_id__440B1D61">
+            <End Role="books" EntitySet="books" />
+            <End Role="reviews" EntitySet="reviews" />
+          </AssociationSet>
+          <AssociationSet Name="FK__checkouts__user___4316F928" Association="Self.FK__checkouts__user___4316F928">
+            <End Role="REGISTER" EntitySet="REGISTERs" />
+            <End Role="checkouts" EntitySet="checkouts" />
+          </AssociationSet>
+          <FunctionImport Name="sp_REGISTER">
+            <Parameter Name="Task" Mode="In" Type="Int32" />
+            <Parameter Name="FNAME" Mode="In" Type="String" />
+            <Parameter Name="LNAME" Mode="In" Type="String" />
+            <Parameter Name="EMAILID" Mode="In" Type="String" />
+            <Parameter Name="PASSWORD" Mode="In" Type="String" />
+          </FunctionImport>
+          <EntitySet Name="Logins" EntityType="EntityModel.Login" />
+        </EntityContainer>
+        <EntityType Name="Login">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Decimal" Nullable="false" Precision="18" Scale="0" />
+          <Property Name="username" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="password" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+        </EntityType>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="EntityModelStoreContainer" CdmEntityContainer="EntityEntities">
+          <EntitySetMapping Name="addresses">
+            <EntityTypeMapping TypeName="EntityModel.address">
+              <MappingFragment StoreEntitySet="addresses">
+                <ScalarProperty Name="user_id" ColumnName="user_id" />
+                <ScalarProperty Name="street" ColumnName="street" />
+                <ScalarProperty Name="city" ColumnName="city" />
+                <ScalarProperty Name="state" ColumnName="state" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="books">
+            <EntityTypeMapping TypeName="EntityModel.book">
+              <MappingFragment StoreEntitySet="books">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="title" ColumnName="title" />
+                <ScalarProperty Name="author" ColumnName="author" />
+                <ScalarProperty Name="isbn" ColumnName="isbn" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="checkouts">
+            <EntityTypeMapping TypeName="EntityModel.checkout">
+              <MappingFragment StoreEntitySet="checkouts">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="user_id" ColumnName="user_id" />
+                <ScalarProperty Name="book_id" ColumnName="book_id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="REGISTERs">
+            <EntityTypeMapping TypeName="EntityModel.REGISTER">
+              <MappingFragment StoreEntitySet="REGISTER">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="FNAME" ColumnName="FNAME" />
+                <ScalarProperty Name="LNAME" ColumnName="LNAME" />
+                <ScalarProperty Name="EMAILID" ColumnName="EMAILID" />
+                <ScalarProperty Name="PASSWORD" ColumnName="PASSWORD" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="reviews">
+            <EntityTypeMapping TypeName="EntityModel.review">
+              <MappingFragment StoreEntitySet="reviews">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="book_id" ColumnName="book_id" />
+                <ScalarProperty Name="reviewer_name" ColumnName="reviewer_name" />
+                <ScalarProperty Name="content" ColumnName="content" />
+                <ScalarProperty Name="rating" ColumnName="rating" />
+                <ScalarProperty Name="published_date" ColumnName="published_date" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="sp_REGISTER" FunctionName="EntityModel.Store.sp_REGISTER" />
+          <EntitySetMapping Name="Logins">
+            <EntityTypeMapping TypeName="EntityModel.Login">
+              <MappingFragment StoreEntitySet="Login">
+                <ScalarProperty Name="password" ColumnName="password" />
+                <ScalarProperty Name="username" ColumnName="username" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
